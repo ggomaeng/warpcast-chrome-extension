@@ -1,26 +1,20 @@
-import { useEffect, useState } from "react"
+import { Storage } from "@plasmohq/storage"
 
 import "./style.css"
 
-import { Storage } from "@plasmohq/storage"
-
-const storage = new Storage()
+import { useStorage } from "@plasmohq/storage/hook"
 
 function IndexPopup() {
-  const [isChecked, setIsChecked] = useState(false)
-
-  useEffect(() => {
-    storage.get("gifPFP").then((value) => {
-      if (value !== null) {
-        setIsChecked(value === "true")
-      }
+  const [isChecked, setIsChecked] = useStorage({
+    key: "gifPFP",
+    instance: new Storage({
+      area: "local"
     })
-  }, [])
+  })
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = async (event) => {
     const newValue = event.target.checked
     setIsChecked(newValue)
-    storage.set("gifPFP", newValue)
   }
 
   return (

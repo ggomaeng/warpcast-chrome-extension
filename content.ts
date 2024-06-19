@@ -6,7 +6,9 @@ export const config: PlasmoCSConfig = {
   matches: ["https://warpcast.com/*"]
 }
 
-const storage = new Storage()
+const storage = new Storage({
+  area: "local"
+})
 
 window.addEventListener("load", async () => {
   console.log("hello from @undefined :)")
@@ -26,16 +28,19 @@ window.addEventListener("load", async () => {
     }
   }
 
-  const initValue: boolean = (await storage.get("gifPFP")) ?? false
+  async function getCheckedValue() {
+    const value: boolean = (await storage.get("gifPFP")) ?? false
+    return value
+  }
 
   // Call the function initially to replace all existing img src props
-  replaceImgSrc(initValue)
+  replaceImgSrc(await getCheckedValue())
 
   // Mutation observer to watch for changes in the DOM
   const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
+    mutations.forEach(async (mutation) => {
       if (mutation.type === "childList") {
-        replaceImgSrc(initValue)
+        replaceImgSrc(await getCheckedValue())
       }
     })
   })
