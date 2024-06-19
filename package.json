@@ -1,6 +1,6 @@
 {
   "name": "warpcast-chrome-extension",
-  "displayName": "💜 Warpcast Chrome Extension",
+  "displayName": "💜 Make Warpcast Better Again",
   "version": "0.0.1",
   "description": "Make warpcast better again by @undefined",
   "author": "@undefined",
@@ -30,9 +30,6 @@
   "manifest": {
     "host_permissions": [
       "https://*/*"
-    ],
-    "permissions": [
-      "scripting"
     ]
   }
 }
