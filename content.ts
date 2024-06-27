@@ -62,7 +62,8 @@ window.addEventListener("load", async () => {
   })
 
   async function changeFont(selector: string, color: string) {
-    if (color === "") return
+    const isThemeActive = await getThemeActive()
+    if (color === "" || !isThemeActive) return
 
     let style = document.getElementById(
       `custom-font-style-${selector}`
@@ -81,6 +82,11 @@ window.addEventListener("load", async () => {
     } else {
       style.textContent = css
     }
+  }
+
+  async function getThemeActive() {
+    const value: boolean = (await storage.get("ThemeActive")) ?? false
+    return value
   }
 
   async function getMainColorValue() {
@@ -111,8 +117,11 @@ window.addEventListener("load", async () => {
     }
   })
 
-  function setBackgroundImage(url: string, innerBack: string | boolean) {
-    if (window.location.hostname === "warpcast.com") {
+  async function setBackgroundImage(url: string, innerBack: string | boolean) {
+    if (
+      window.location.hostname === "warpcast.com" &&
+      (await getThemeActive())
+    ) {
       let rootDiv = document.querySelector("div[data-rk]")
 
       if (innerBack) {
@@ -166,7 +175,7 @@ window.addEventListener("load", async () => {
   }
 
   async function getInnerBackground() {
-    const value: string | boolean = (await storage.get("innerBackground")) ?? ""
+    const value: boolean = (await storage.get("innerBackground")) ?? false
     return value
   }
 

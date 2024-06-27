@@ -49,6 +49,13 @@ function IndexPopup() {
     })
   })
 
+  const [isThemeActive, setThemeActive] = useStorage({
+    key: "ThemeActive",
+    instance: new Storage({
+      area: "local"
+    })
+  })
+
   const imageUrlText = useRef<HTMLInputElement>(null)
 
   const handleCheckboxChange = async (event) => {
@@ -66,6 +73,11 @@ function IndexPopup() {
   const handleInnerBackgroundChange = async (event) => {
     const newValue = event.target.checked
     setIsInnerChecked(newValue)
+  }
+
+  const handleThemeActiveChange = async (event) => {
+    const newValue = event.target.checked
+    setThemeActive(newValue)
   }
 
   return (
@@ -104,15 +116,18 @@ function IndexPopup() {
         </label>
         <span className="ml-2">enable gif PFP</span>
       </div>
-      <div className="flex items-center mt-5 gap-3">
+      <div
+        className={`flex items-center mt-5 gap-3 ${isThemeActive ? "" : "hidden"}`}>
         <PopoverPicker color={colorMain} onChange={setColorMain} />
         <label>Main Font Color</label>
       </div>
-      <div className="flex items-center mt-5 gap-3">
+      <div
+        className={`flex items-center mt-5 gap-3 ${isThemeActive ? "" : "hidden"}`}>
         <PopoverPicker color={colorSecond} onChange={setColorSecond} />
         <label>Secondary Font Color</label>
       </div>
-      <div className="flex items-center mt-5 gap-3">
+      <div
+        className={`flex items-center mt-5 gap-3 ${isThemeActive ? "" : "hidden"}`}>
         <button
           className="px-6 py-2 rounded-md font-semibold transition-colors duration-200 ease-in-out bg-blue-600 text-white
                 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 active:bg-blue-800"
@@ -129,7 +144,8 @@ function IndexPopup() {
           placeholder={imageUrl ? imageUrl : "Image Url"}
         />
       </div>
-      <div className="flex items-center mt-5">
+      <div
+        className={`flex items-center mt-5 ${isThemeActive ? "" : "hidden"}`}>
         <input
           type="checkbox"
           id="innerBackground"
@@ -146,6 +162,26 @@ function IndexPopup() {
             className={`absolute left-1 top-0 w-4 h-4 bg-white border border-gray-300 rounded-full transition-transform duration-300 transform ${isInnerChecked ? "translate-x-4" : ""}`}></span>
         </label>
         <span className="ml-2">Inner Background</span>
+      </div>
+      <div className="flex items-center mt-5">
+        <input
+          type="checkbox"
+          id="ThemeActive"
+          name="option"
+          value="ThemeActive"
+          checked={isThemeActive}
+          onChange={handleThemeActiveChange}
+          className="hidden peer"
+        />
+        <label
+          htmlFor="ThemeActive"
+          className={`relative flex items-center cursor-pointer border-2 border-gray-300 w-10 h-5 rounded-full transition-colors duration-300 ${isThemeActive ? "bg-blue-500" : "bg-gray-200"}`}>
+          <span
+            className={`absolute left-1 top-0 w-4 h-4 bg-white border border-gray-300 rounded-full transition-transform duration-300 transform ${isThemeActive ? "translate-x-4" : ""}`}></span>
+        </label>
+        <span className="ml-2">
+          Theme {isThemeActive ? "Enabled" : "Disabled"}
+        </span>
       </div>
       <br />
     </div>
